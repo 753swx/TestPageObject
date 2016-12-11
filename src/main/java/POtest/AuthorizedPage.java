@@ -48,7 +48,7 @@ public class AuthorizedPage {
     {
         driver.findElement(saveDraftButton).click();
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Сохранено")));
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
@@ -60,7 +60,13 @@ public class AuthorizedPage {
 //        }catch(Exception ex)
 //        {
 //        }
-        driver.findElement(draftsLink).click();
+        try {
+            driver.findElement(draftsLink).click();
+        } catch (org.openqa.selenium.StaleElementReferenceException ex){
+            openDrafts();
+            System.out.println("ACHTUNG!!!!!! Сработал  catch  в  openDrafts!");
+        }
+
     }
 
     public boolean presenceBySubject(String subject)
@@ -123,7 +129,7 @@ public class AuthorizedPage {
 
         try {
             driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-            WebDriverWait wait = new WebDriverWait(driver, 3);
+            WebDriverWait wait = new WebDriverWait(driver, 5);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
             return true;
@@ -131,7 +137,7 @@ public class AuthorizedPage {
             try {
                 openDrafts();
                 driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-                WebDriverWait wait = new WebDriverWait(driver, 3);
+                WebDriverWait wait = new WebDriverWait(driver, 5);
                 wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
                 driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
                 return true;
@@ -161,7 +167,7 @@ public class AuthorizedPage {
         driver.findElement(logoutLink).click();
         try
         {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         }catch(Exception ex)
         {
         }
