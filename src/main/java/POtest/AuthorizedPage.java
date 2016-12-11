@@ -110,6 +110,12 @@ public class AuthorizedPage {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(sentMessage));
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        try
+        {
+            Thread.sleep(2000);
+        }catch(Exception ex)
+        {
+        }
 
     }
 
@@ -145,7 +151,7 @@ public class AuthorizedPage {
         driver.findElement(logoutLink).click();
         try
         {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         }catch(Exception ex)
         {
         }
