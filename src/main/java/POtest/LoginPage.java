@@ -59,7 +59,7 @@ public class LoginPage {
     public boolean isAuthorizationSuccessfull(){
         try {
             driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, 15);
             wait.until(ExpectedConditions.titleContains("Входящие - Почта Mail.Ru"));
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
             return true;

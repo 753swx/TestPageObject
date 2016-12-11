@@ -110,12 +110,12 @@ public class AuthorizedPage {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(sentMessage));
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        try
-        {
-            Thread.sleep(2000);
-        }catch(Exception ex)
-        {
-        }
+//        try
+//        {
+//            Thread.sleep(2000);
+//        }catch(Exception ex)
+//        {
+//        }
 
     }
 
@@ -123,12 +123,22 @@ public class AuthorizedPage {
 
         try {
             driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, 3);
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
             return true;
-        }catch (org.openqa.selenium.TimeoutException e){
-            return false;
+        } catch (org.openqa.selenium.TimeoutException e){
+            try {
+                openDrafts();
+                driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+                WebDriverWait wait = new WebDriverWait(driver, 3);
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
+                driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+                return true;
+            } catch (org.openqa.selenium.TimeoutException e1){
+                driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+                return false;
+            }
         }
 
 //        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
