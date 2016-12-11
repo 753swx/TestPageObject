@@ -10,9 +10,8 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import org.testng.annotations.Test;
-/**
- * Created by Наташа on 08.12.2016.
- */
+
+
 public class AuthorizedPage {
 
     private WebDriver driver;
@@ -85,16 +84,17 @@ public class AuthorizedPage {
     }
 
     public String getAddressee(){
-        try
-        {
-            Thread.sleep(2000);
-        }catch(Exception ex)
-        {
-        }
-//        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-//        WebDriverWait wait = new WebDriverWait(driver, 10);
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input#compose_to")));
-//        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+//        try
+//        {
+//            Thread.sleep(2000);
+//        }catch(Exception ex)
+//        {
+//        }
+
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='js-compose-label compose__labels__label'][2]")));
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
        return driver.findElement(By.cssSelector("input#compose_to")).getAttribute("value");
     }
@@ -167,7 +167,7 @@ public class AuthorizedPage {
         driver.findElement(logoutLink).click();
         try
         {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         }catch(Exception ex)
         {
         }

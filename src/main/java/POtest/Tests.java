@@ -16,9 +16,6 @@ import org.testng.annotations.Test;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
-/**
- * Created by Наташа on 08.12.2016.
- */
 public class Tests {
 
     private WebDriver driver;

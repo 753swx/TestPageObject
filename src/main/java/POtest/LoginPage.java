@@ -10,9 +10,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import org.testng.annotations.Test;
 
-/**
- * Created by Наташа on 08.12.2016.
- */
+
 public class LoginPage {
 
     private WebDriver driver;

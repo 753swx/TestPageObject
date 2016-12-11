@@ -58,7 +58,7 @@ public class Playground {
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span[data-text='useful_person@mail.ru']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='js-compose-label compose__labels__label'][2]")));
 
 //        WebElement elementWithAddress = driver.findElement(By.cssSelector("input#compose_to"));
         String sddressFromAttribute = driver.findElement(By.cssSelector("input#compose_to")).getAttribute("value");
