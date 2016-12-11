@@ -2,14 +2,10 @@ package POtest;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import org.testng.annotations.Test;
+
 
 
 public class AuthorizedPage {
@@ -53,17 +49,10 @@ public class AuthorizedPage {
     }
 
     public void openDrafts() {
-//        try
-//        {
-//            Thread.sleep(2000);
-//        }catch(Exception ex)
-//        {
-//        }
         try {
             driver.findElement(draftsLink).click();
         } catch (org.openqa.selenium.StaleElementReferenceException ex){
             openDrafts();
-            System.out.println("ACHTUNG!!!!!! Сработал  catch  в  openDrafts!");
         }
 
     }
@@ -80,23 +69,19 @@ public class AuthorizedPage {
 
     public void openMailBySubject(String subject)
     {
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         driver.findElement(By.cssSelector("a[data-subject='"+ subject +"']")).click();
     }
 
     public String getAddressee(){
-//        try
-//        {
-//            Thread.sleep(2000);
-//        }catch(Exception ex)
-//        {
-//        }
-
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='js-compose-label compose__labels__label'][2]")));
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-
-       return driver.findElement(By.cssSelector("input#compose_to")).getAttribute("value");
+        return driver.findElement(By.cssSelector("input#compose_to")).getAttribute("value");
     }
 
     public String getSubject(){
@@ -116,17 +101,9 @@ public class AuthorizedPage {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(sentMessage));
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-//        try
-//        {
-//            Thread.sleep(2000);
-//        }catch(Exception ex)
-//        {
-//        }
-
     }
 
     public boolean absenceBySubject(String subject){
-
         try {
             driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
             WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -165,12 +142,9 @@ public class AuthorizedPage {
 
     public void logout(){
         driver.findElement(logoutLink).click();
-        try
-        {
-            Thread.sleep(2000);
-        }catch(Exception ex)
-        {
-        }
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("mailbox__auth__button")));
     }
 }
 

@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import org.testng.annotations.Test;
+
 
 public class Playground {
     public static void main(String[] args){

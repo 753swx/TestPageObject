@@ -2,13 +2,9 @@ package POtest;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import org.testng.annotations.Test;
 
 
 public class LoginPage {
@@ -27,19 +23,16 @@ public class LoginPage {
     public void typeLogin(String login)
     {
         driver.findElement(loginField).sendKeys(login);
-
     }
 
     public void typePassword(String pass)
     {
         driver.findElement(passField).sendKeys(pass);
-
     }
 
     public void clickOnLoginButton ()
     {
         driver.findElement(loginButton).click();
-
     }
 
 //    public String getTitle ()
@@ -54,7 +47,7 @@ public class LoginPage {
 //
 //    }
 
-    public boolean isAuthorizationSuccessfull(){
+    public boolean isAuthorizationSuccessful(){
         try {
             driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
             WebDriverWait wait = new WebDriverWait(driver, 15);

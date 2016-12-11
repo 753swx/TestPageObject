@@ -1,16 +1,9 @@
 package POtest;
 
-import org.junit.Before;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.annotations.AfterClass;
@@ -25,9 +18,9 @@ public class Tests {
     private String login = "testtask2016";
     private String pass = "1123581321test";
 
-    private String addressee = "useful_person@mail.ru";
-    private String subject = "tfgx1  11hkj4";
-    private String text = "some te11111111ft";
+    private String addressee = "753r@mail.ru";
+    private String subject = "some subject";
+    private String text = "some text";
 
     @BeforeClass
     public void setUp() {
@@ -48,8 +41,7 @@ public class Tests {
         logPage.typeLogin(login);
         logPage.typePassword(pass);
         logPage.clickOnLoginButton();
-//        Assert.assertTrue(logPage.getTitle().contains("Входящие - Почта Mail.Ru"));
-        Assert.assertTrue(logPage.isAuthorizationSuccessfull());
+        Assert.assertTrue(logPage.isAuthorizationSuccessful());
     }
 
     @Test(dependsOnMethods = { "AuthorizationTest" })
@@ -71,10 +63,8 @@ public class Tests {
     @Test(dependsOnMethods = { "CheckMailContent" })
     public void SendAndCheckDrafts(){
         authPage.sendMail();
-//        authPage.openDrafts();
         authPage.openDrafts();
         Assert.assertTrue(authPage.absenceBySubject(subject));
-
     }
 
     @Test(dependsOnMethods = { "SendAndCheckDrafts" })
