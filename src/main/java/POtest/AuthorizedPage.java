@@ -69,11 +69,7 @@ public class AuthorizedPage {
 
     public void openMailBySubject(String subject)
     {
-        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        driver.findElement(By.cssSelector("a[data-subject='"+ subject +"']")).click();
+        driver.findElement(By.cssSelector("a[data-subject='"+ subject +"'][href$='drafts/']")).click();
     }
 
     public String getAddressee(){

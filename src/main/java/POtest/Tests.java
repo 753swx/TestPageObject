@@ -17,9 +17,8 @@ public class Tests {
 
     private String login = "testtask2016";
     private String pass = "1123581321test";
-
     private String addressee = "753r@mail.ru";
-    private String subject = "some subject";
+    private String subject = "some subject1";
     private String text = "some text";
 
     @BeforeClass
