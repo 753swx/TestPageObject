@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -55,12 +54,12 @@ public class AuthorizedPage {
     }
 
     public void openDrafts() {
-        try
-        {
-            Thread.sleep(2000);
-        }catch(Exception ex)
-        {
-        }
+//        try
+//        {
+//            Thread.sleep(2000);
+//        }catch(Exception ex)
+//        {
+//        }
         driver.findElement(draftsLink).click();
     }
 
@@ -86,6 +85,11 @@ public class AuthorizedPage {
         }catch(Exception ex)
         {
         }
+//        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+//        WebDriverWait wait = new WebDriverWait(driver, 10);
+//        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input#compose_to")));
+//        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
        return driver.findElement(By.cssSelector("input#compose_to")).getAttribute("value");
     }
 
@@ -111,16 +115,25 @@ public class AuthorizedPage {
 
     public boolean absenceBySubject(String subject){
 
-        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         try {
-//            driver.findElement(By.cssSelector("a[data-title='"+ addressee +"']"));
-            driver.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
-            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-            return false;
-        } catch (org.openqa.selenium.NoSuchElementException ex){
+            driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
             return true;
+        }catch (org.openqa.selenium.TimeoutException e){
+            return false;
         }
+
+//        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+//        try {
+//            driver.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
+//            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+//            return false;
+//        } catch (org.openqa.selenium.NoSuchElementException ex){
+//            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+//            return true;
+//        }
 
     }
 
@@ -132,7 +145,7 @@ public class AuthorizedPage {
         driver.findElement(logoutLink).click();
         try
         {
-            Thread.sleep(4000);
+            Thread.sleep(2000);
         }catch(Exception ex)
         {
         }

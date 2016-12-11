@@ -44,14 +44,27 @@ public class LoginPage {
 
     }
 
-    public String getTitle ()
-    {
-        try
-        {
-            Thread.sleep(5000);
-        }catch(Exception ex)
-        {
+//    public String getTitle ()
+//    {
+//        try
+//        {
+//            Thread.sleep(5000);
+//        }catch(Exception ex)
+//        {
+//        }
+//        return driver.getTitle();
+//
+//    }
+
+    public boolean isAuthorizationSuccessfull(){
+        try {
+            driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.titleContains("Входящие - Почта Mail.Ru"));
+            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+            return true;
+        }catch (org.openqa.selenium.TimeoutException e){
+            return false;
         }
-        return driver.getTitle();
     }
 }
