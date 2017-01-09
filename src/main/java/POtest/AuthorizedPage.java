@@ -44,7 +44,7 @@ public class AuthorizedPage {
         driver.findElement(saveDraftButton).click();
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Сохранено")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("черновиках")));
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 

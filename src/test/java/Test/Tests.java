@@ -1,5 +1,7 @@
-package POtest;
+package Test;
 
+import POtest.AuthorizedPage;
+import POtest.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -17,8 +19,8 @@ public class Tests {
 
     private String login = "testtask2016";
     private String pass = "1123581321test";
-    private String addressee = "753r@mail.ru";
-    private String subject = "some subject1";
+    private String addressee = "testtask2016@mail.ru";
+    private String subject = "some subject";
     private String text = "some text";
 
     @BeforeClass
