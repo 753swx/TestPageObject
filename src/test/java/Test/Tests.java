@@ -25,7 +25,7 @@ public class Tests {
 
     @BeforeClass
     public void setUp() {
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
         logPage = new LoginPage(driver);
         authPage = new AuthorizedPage(driver);
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -51,27 +51,33 @@ public class Tests {
         authPage.saveDraft();
         authPage.openDrafts();
         Assert.assertTrue(authPage.presenceBySubject(subject));
+        authPage.contextClickLastMail();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Test(dependsOnMethods = { "PresenceInDrafts" })
-    public void CheckMailContent() {
-        authPage.openMailBySubject(subject);
-        Assert.assertEquals(authPage.getAddressee(), addressee + ",");
-        Assert.assertEquals(authPage.getSubject(), subject);
-        Assert.assertTrue(authPage.getText().contains(text));
-    }
-
-    @Test(dependsOnMethods = { "CheckMailContent" })
-    public void SendAndCheckDrafts(){
-        authPage.sendMail();
-        authPage.openDrafts();
-        Assert.assertTrue(authPage.absenceBySubject(subject));
-    }
-
-    @Test(dependsOnMethods = { "SendAndCheckDrafts" })
-    public void CheckPresenceInSent(){
-        authPage.openSent();
-        Assert.assertTrue(authPage.presenceBySubject(subject));
-        authPage.logout();
-    }
+//    @Test(dependsOnMethods = { "PresenceInDrafts" })
+//    public void CheckMailContent() {
+//        authPage.openMailBySubject(subject);
+//        Assert.assertEquals(authPage.getAddressee(), addressee + ",");
+//        Assert.assertEquals(authPage.getSubject(), subject);
+//        Assert.assertTrue(authPage.getText().contains(text));
+//    }
+//
+//    @Test(dependsOnMethods = { "CheckMailContent" })
+//    public void SendAndCheckDrafts(){
+//        authPage.sendMail();
+//        authPage.openDrafts();
+//        Assert.assertTrue(authPage.absenceBySubject(subject));
+//    }
+//
+//    @Test(dependsOnMethods = { "SendAndCheckDrafts" })
+//    public void CheckPresenceInSent(){
+//        authPage.openSent();
+//        Assert.assertTrue(authPage.presenceBySubject(subject));
+//        authPage.logout();
+//    }
 }

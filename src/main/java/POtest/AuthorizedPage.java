@@ -2,8 +2,12 @@ package POtest;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -103,7 +107,7 @@ public class AuthorizedPage {
         try {
             driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
             WebDriverWait wait = new WebDriverWait(driver, 5);
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"'][href$='drafts/']")));
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
             return true;
         } catch (org.openqa.selenium.TimeoutException e){
@@ -111,7 +115,7 @@ public class AuthorizedPage {
                 openDrafts();
                 driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
                 WebDriverWait wait = new WebDriverWait(driver, 5);
-                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"'][href$='drafts/']")));
                 driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
                 return true;
             } catch (org.openqa.selenium.TimeoutException e1){
@@ -141,6 +145,27 @@ public class AuthorizedPage {
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.elementToBeClickable(By.id("mailbox__auth__button")));
+    }
+
+    public void contextClickLastMail(){
+        List<WebElement> dataListDiv = driver.findElements(By.cssSelector("div.b-datalist__body"));
+        List<WebElement> mailList = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']" +
+                " div[data-bem='b-datalist__item']"));
+        WebElement lastMail = mailList.get(0);
+        String a = lastMail.findElement(By.tagName("a")).getAttribute("data-subject");
+        int divSize = dataListDiv.size();
+        int size = mailList.size();
+
+        Actions action = new Actions(driver);
+        action.contextClick(lastMail).build().perform();
+
+        driver.findElement(By.cssSelector("div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']")).click();
+
+
+        System.out.println("data title: " + a);
+        System.out.println("div list size: " + divSize);
+        System.out.println("list size: " + size);
+
     }
 }
 
