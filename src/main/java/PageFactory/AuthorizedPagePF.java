@@ -1,10 +1,7 @@
 package PageFactory;
 
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -62,6 +59,17 @@ public class AuthorizedPagePF extends Page{
         return this;
     }
 
+    public AuthorizedPagePF actionCreateNewMail(String addressee, String subject, String text)
+    {
+        new Actions(driver).sendKeys("n").build().perform();
+        addresseeField.sendKeys(addressee);
+        subjectField.sendKeys(subject);
+        driver.switchTo().frame(inputTextFrame);
+        inputTextField.sendKeys(text);
+        driver.switchTo().defaultContent();
+        return this;
+    }
+
     public AuthorizedPagePF saveDraft()
     {
         saveDraftButton.click();
@@ -72,15 +80,24 @@ public class AuthorizedPagePF extends Page{
         return this;
     }
 
+    public AuthorizedPagePF actionSaveDraft()
+    {
+        new Actions(driver).keyDown(Keys.CONTROL).sendKeys("s").keyUp(Keys.CONTROL).build().perform();
+        setImplicitlyWait(0);
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("черновиках")));
+        setImplicitlyWait(20);
+        return this;
+    }
+
     public AuthorizedPagePF openDrafts() {
         try {
             draftsLink.click();
-            return this;
         } catch (org.openqa.selenium.StaleElementReferenceException ex){
             openDrafts();
         }
 
-        return null;
+        return this;
     }
 
     public boolean presenceBySubject(String subject)
@@ -88,6 +105,7 @@ public class AuthorizedPagePF extends Page{
         try {
             driver.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
             return true;
+
         } catch (org.openqa.selenium.NoSuchElementException ex){
             return false;
         }
@@ -150,7 +168,13 @@ public class AuthorizedPagePF extends Page{
     }
 
     public AuthorizedPagePF openSent() {
-        sentLink.click();
+        try {
+            sentLink.click();
+        } catch (org.openqa.selenium.StaleElementReferenceException ex){
+            openSent();
+        }
+//        sentLink.click();
+//        return this;
         return this;
     }
 
@@ -165,6 +189,55 @@ public class AuthorizedPagePF extends Page{
             e.printStackTrace();
         }
         return new LoginPagePF(driver);
+    }
+
+    public AuthorizedPagePF actionDeleteLastMail(){
+//        List<WebElement> dataListDiv = driver.findElements(By.cssSelector("div.b-datalist__body"));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
+        WebElement visibleMailListsDiv;
+        visibleMailListsDiv = mailListsDIV.get(1);
+//        if(mailListsDIV.get(0).isDisplayed()){
+//            visibleMailListsDiv = mailListsDIV.get(0);
+//        }else {
+//            visibleMailListsDiv = mailListsDIV.get(1);
+//        }
+        List<WebElement> mailLists = visibleMailListsDiv.findElements(By.cssSelector("div[data-bem='b-datalist__item']"));
+        WebElement lastMail = mailLists.get(0);
+        String a = lastMail.findElement(By.tagName("a")).getAttribute("data-subject");
+        int divSize = mailListsDIV.size();
+        int size = mailLists.size();
+
+        System.out.println("Debug info: ");
+        System.out.println("last mail is displayed: " + lastMail.isDisplayed());
+        System.out.println("data title: " + a);
+        System.out.println("div list size: " + divSize);
+        System.out.println("mailLists size: " + size);
+
+        Actions action = new Actions(driver);
+        action.contextClick(lastMail).build().perform();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+        WebElement delMailFromContextMenu = driver.findElement(By.cssSelector("div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']"));
+        action.moveToElement(delMailFromContextMenu).build().perform();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+        action.click().build().perform();
+//        driver.findElement(By.cssSelector("div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']")).click();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+
+        return this;
     }
 
 

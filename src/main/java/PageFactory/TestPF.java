@@ -4,6 +4,7 @@ package PageFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -15,11 +16,11 @@ public class TestPF {
     private LoginPagePF logPage;
     private AuthorizedPagePF authPage;
 
-    private String login = "testtask2016";
-    private String pass = "1123581321test";
-    private String addressee = "testtask2016@mail.ru";
-    private String subject = "some subject";
-    private String text = "some text";
+    private final String login = "testtask2016";
+    private final String pass = "1123581321test";
+    private final String addressee = "testtask2016@mail.ru";
+    private final String subject = "some subject";
+    private final String text = "some text";
 
     @BeforeClass
     public void setUp() {
@@ -44,8 +45,8 @@ public class TestPF {
 
     @Test(dependsOnMethods = { "AuthorizationTest" })
     public void PresenceInDrafts() {
-        authPage.createNewMail(addressee, subject, text)
-                .saveDraft()
+        authPage.actionCreateNewMail(addressee, subject, text)
+                .actionSaveDraft()
                 .openDrafts();
         Assert.assertTrue(authPage.presenceBySubject(subject));
     }
@@ -69,6 +70,9 @@ public class TestPF {
     public void CheckPresenceInSent(){
         authPage.openSent();
         Assert.assertTrue(authPage.presenceBySubject(subject));
+
+        authPage.actionDeleteLastMail();
+
         authPage.logout();
     }
 }

@@ -47,11 +47,11 @@ public class Tests {
 
     @Test(dependsOnMethods = { "AuthorizationTest" })
     public void PresenceInDrafts() {
-        authPage.createNewMail(addressee, subject, text);
-        authPage.saveDraft();
+        authPage.actionCreateNewMail(addressee, subject, text);
+        authPage.actionSaveDraft();
         authPage.openDrafts();
         Assert.assertTrue(authPage.presenceBySubject(subject));
-        authPage.contextClickLastMail();
+        authPage.actionDeleteLastMail();
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

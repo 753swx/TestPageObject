@@ -1,12 +1,15 @@
 package POtest;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -43,9 +46,27 @@ public class AuthorizedPage {
         driver.switchTo().defaultContent();
     }
 
+    public void actionCreateNewMail(String addressee, String subject, String text) {
+        new Actions(driver).sendKeys("n").build().perform();
+        driver.findElement(addresseeField).sendKeys(addressee);
+        driver.findElement(subjectField).sendKeys(subject);
+        driver.switchTo().frame(driver.findElement(inputTextFrame));
+        driver.findElement(inputTextField).sendKeys(text);
+        driver.switchTo().defaultContent();
+    }
+
     public void saveDraft()
     {
         driver.findElement(saveDraftButton).click();
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("черновиках")));
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    }
+
+    public void actionSaveDraft()
+    {
+        new Actions(driver).keyDown(Keys.CONTROL).sendKeys("s").keyUp(Keys.CONTROL).build().perform();
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("черновиках")));
@@ -147,7 +168,7 @@ public class AuthorizedPage {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("mailbox__auth__button")));
     }
 
-    public void contextClickLastMail(){
+    public void actionDeleteLastMail(){
         List<WebElement> dataListDiv = driver.findElements(By.cssSelector("div.b-datalist__body"));
         List<WebElement> mailList = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']" +
                 " div[data-bem='b-datalist__item']"));
@@ -158,10 +179,19 @@ public class AuthorizedPage {
 
         Actions action = new Actions(driver);
         action.contextClick(lastMail).build().perform();
-
-        driver.findElement(By.cssSelector("div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']")).click();
-
-
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+        WebElement delMailFromContextMenu = driver.findElement(By.cssSelector("div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']"));
+        action.moveToElement(delMailFromContextMenu).build().perform();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+        action.click().build().perform();
+//        driver.findElement(By.cssSelector("div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']")).click();
+        System.out.println("mail list is displayed: " + lastMail.isDisplayed());
         System.out.println("data title: " + a);
         System.out.println("div list size: " + divSize);
         System.out.println("list size: " + size);
