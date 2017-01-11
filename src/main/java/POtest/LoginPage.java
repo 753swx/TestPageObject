@@ -1,7 +1,9 @@
 package POtest;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.concurrent.TimeUnit;
@@ -58,4 +60,31 @@ public class LoginPage {
             return false;
         }
     }
+
+    public void loginFieldsHighlightMsg(){
+        WebElement msg = driver.findElement(By.cssSelector("span.mailbox__title__link__text"));
+        WebElement loginField = driver.findElement(By.id("mailbox__login"));
+        WebElement passField = driver.findElement(By.id("mailbox__password"));
+
+        JavascriptExecutor js = ((JavascriptExecutor) driver);
+        js.executeScript("arguments[0].innerHTML = 'Highlighting &#129095';" +
+                        "arguments[0].style.color = 'red';" +
+                        "arguments[0].style.fontSize = '22px';"+
+                         "arguments[0].style.backgroundColor = 'yellow'", msg);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        js.executeScript("arguments[0].style.backgroundColor = 'yellow';" +
+                "arguments[1].style.backgroundColor = 'yellow';" , loginField, passField);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

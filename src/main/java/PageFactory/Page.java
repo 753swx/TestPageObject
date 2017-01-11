@@ -1,9 +1,12 @@
 package PageFactory;
 
 
-import org.openqa.selenium.WebDriver;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Page {
@@ -17,6 +20,27 @@ public abstract class Page {
 
     public void setImplicitlyWait (int seconds){
         driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+    }
+
+    public void makeScreenshot(){
+        File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFileToDirectory(screenshot, new File("C:\\WebDriverTestScreenshots"));
+            System.out.println("Screenshot was saved in C:\\WebDriverTestScreenshots.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void highLightBackground(WebElement webElement){
+        JavascriptExecutor js = ((JavascriptExecutor) driver);
+        js.executeScript("arguments[0].style.backgroundColor = 'yellow'", webElement);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

@@ -39,25 +39,32 @@ public class Tests {
 
     @Test
     public void AuthorizationTest() {
+        logPage.loginFieldsHighlightMsg();
+//        try {
+//            Thread.sleep(1500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         logPage.typeLogin(login);
         logPage.typePassword(pass);
         logPage.clickOnLoginButton();
         Assert.assertTrue(logPage.isAuthorizationSuccessful());
+
     }
 
-    @Test(dependsOnMethods = { "AuthorizationTest" })
-    public void PresenceInDrafts() {
-        authPage.actionCreateNewMail(addressee, subject, text);
-        authPage.actionSaveDraft();
-        authPage.openDrafts();
-        Assert.assertTrue(authPage.presenceBySubject(subject));
-        authPage.actionDeleteLastMail();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test(dependsOnMethods = { "AuthorizationTest" })
+//    public void PresenceInDrafts() {
+//        authPage.actionCreateNewMail(addressee, subject, text);
+//        authPage.actionSaveDraft();
+//        authPage.openDrafts();
+//        Assert.assertTrue(authPage.presenceBySubject(subject));
+//        authPage.actionDeleteLastMail();
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 //    @Test(dependsOnMethods = { "PresenceInDrafts" })
 //    public void CheckMailContent() {

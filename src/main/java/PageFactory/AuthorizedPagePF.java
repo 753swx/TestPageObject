@@ -173,8 +173,6 @@ public class AuthorizedPagePF extends Page{
         } catch (org.openqa.selenium.StaleElementReferenceException ex){
             openSent();
         }
-//        sentLink.click();
-//        return this;
         return this;
     }
 
@@ -183,39 +181,26 @@ public class AuthorizedPagePF extends Page{
         setImplicitlyWait(0);
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.elementToBeClickable(By.id("mailbox__auth__button")));
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return new LoginPagePF(driver);
     }
 
     public AuthorizedPagePF actionDeleteLastMail(){
-//        List<WebElement> dataListDiv = driver.findElements(By.cssSelector("div.b-datalist__body"));
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
         }
         List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
         WebElement visibleMailListsDiv;
-        visibleMailListsDiv = mailListsDIV.get(1);
-//        if(mailListsDIV.get(0).isDisplayed()){
-//            visibleMailListsDiv = mailListsDIV.get(0);
-//        }else {
-//            visibleMailListsDiv = mailListsDIV.get(1);
-//        }
+        if(mailListsDIV.get(0).isDisplayed()){
+            visibleMailListsDiv = mailListsDIV.get(0);
+        }else {
+            visibleMailListsDiv = mailListsDIV.get(1);
+        }
         List<WebElement> mailLists = visibleMailListsDiv.findElements(By.cssSelector("div[data-bem='b-datalist__item']"));
         WebElement lastMail = mailLists.get(0);
         String a = lastMail.findElement(By.tagName("a")).getAttribute("data-subject");
         int divSize = mailListsDIV.size();
         int size = mailLists.size();
-
-        System.out.println("Debug info: ");
-        System.out.println("last mail is displayed: " + lastMail.isDisplayed());
-        System.out.println("data title: " + a);
-        System.out.println("div list size: " + divSize);
-        System.out.println("mailLists size: " + size);
 
         Actions action = new Actions(driver);
         action.contextClick(lastMail).build().perform();
@@ -230,7 +215,6 @@ public class AuthorizedPagePF extends Page{
         } catch (InterruptedException e) {
         }
         action.click().build().perform();
-//        driver.findElement(By.cssSelector("div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']")).click();
 
         try {
             Thread.sleep(2000);

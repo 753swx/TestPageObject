@@ -1,8 +1,7 @@
 package PageFactory;
 
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,14 +24,18 @@ public class LoginPagePF extends Page {
     @FindBy(id = "mailbox__auth__button")
     private WebElement loginButton;
 
-    public LoginPagePF typeLogin(String login)
-    {
+    @FindBy(css = "span.mailbox__title__link__text")
+    private WebElement highlightMsg;
+
+    public LoginPagePF typeLogin(String login){
+        highLightBackground(loginField);
         loginField.sendKeys(login);
         return this;
     }
 
     public LoginPagePF typePassword(String pass)
     {
+        highLightBackground(passField);
         passField.sendKeys(pass);
         return this;
     }
@@ -53,6 +56,25 @@ public class LoginPagePF extends Page {
         }catch (org.openqa.selenium.TimeoutException e){
             return false;
         }
+    }
+
+    public LoginPagePF loginFieldsHighlightMsg(){
+
+        WebElement msg = this.highlightMsg;
+
+        JavascriptExecutor js = ((JavascriptExecutor) driver);
+        js.executeScript("arguments[0].innerHTML = 'Highlighting &#129095';" +
+                "arguments[0].style.color = 'red';" +
+                "arguments[0].style.fontSize = '22px';"+
+                "arguments[0].style.backgroundColor = 'yellow'", msg);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return this;
+
     }
 
 }

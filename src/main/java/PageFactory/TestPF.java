@@ -25,6 +25,7 @@ public class TestPF {
     @BeforeClass
     public void setUp() {
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
         logPage = new LoginPagePF(driver);
         logPage.setImplicitlyWait(20);
         driver.get("https://mail.ru/");
@@ -37,7 +38,8 @@ public class TestPF {
 
     @Test
     public void AuthorizationTest() {
-        logPage.typeLogin(login)
+        logPage.loginFieldsHighlightMsg()
+                .typeLogin(login)
                 .typePassword(pass);
         authPage = logPage.clickOnLoginButton();
         Assert.assertTrue(logPage.isAuthorizationSuccessful());
@@ -45,6 +47,7 @@ public class TestPF {
 
     @Test(dependsOnMethods = { "AuthorizationTest" })
     public void PresenceInDrafts() {
+        //using keybord actions for managing with hotkeys
         authPage.actionCreateNewMail(addressee, subject, text)
                 .actionSaveDraft()
                 .openDrafts();
@@ -70,7 +73,9 @@ public class TestPF {
     public void CheckPresenceInSent(){
         authPage.openSent();
         Assert.assertTrue(authPage.presenceBySubject(subject));
-
+        //making screenshot. The screenshot would be saved in C:\WebDriverTestScreenshots
+        authPage.makeScreenshot();
+        // deleting the last mail in list using mouse actions (contextClick, moveToElement and click)
         authPage.actionDeleteLastMail();
 
         authPage.logout();
