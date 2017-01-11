@@ -60,6 +60,8 @@ public class TestPF {
         Assert.assertEquals(authPage.getAddressee(), addressee + ",");
         Assert.assertEquals(authPage.getSubject(), subject);
         Assert.assertTrue(authPage.getText().contains(text));
+        //making screenshot. The screenshot would be saved in C:\WebDriverTestScreenshots
+        authPage.makeScreenshot();
     }
 
     @Test(dependsOnMethods = { "CheckMailContent" })
@@ -73,8 +75,6 @@ public class TestPF {
     public void CheckPresenceInSent(){
         authPage.openSent();
         Assert.assertTrue(authPage.presenceBySubject(subject));
-        //making screenshot. The screenshot would be saved in C:\WebDriverTestScreenshots
-        authPage.makeScreenshot();
         // deleting the last mail in list using mouse actions (contextClick, moveToElement and click)
         authPage.actionDeleteLastMail();
 
