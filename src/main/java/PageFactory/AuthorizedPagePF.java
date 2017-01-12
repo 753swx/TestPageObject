@@ -251,13 +251,17 @@ public class AuthorizedPagePF extends Page{
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.titleContains("Отправленные"));
         setImplicitlyWait(20);
-        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
-        WebElement visibleMailListsDiv;
-        if(mailListsDIV.get(0).isDisplayed()){
-            visibleMailListsDiv = mailListsDIV.get(0);
-        }else {
-            visibleMailListsDiv = mailListsDIV.get(1);
+//        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
+        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div.b-datalist__body"));
+        WebElement visibleMailListsDiv = null;
+
+        for (int i = 0; i < mailListsDIV.size(); i++) {
+
+            if(mailListsDIV.get(i).isDisplayed()){
+                visibleMailListsDiv = mailListsDIV.get(i);
+            }
         }
+
         List<WebElement> mailLists = visibleMailListsDiv.findElements(By.cssSelector("div[data-bem='b-datalist__item']"));
         WebElement lastMail = mailLists.get(0);
 //        String a = lastMail.findElement(By.tagName("a")).getAttribute("data-subject");
