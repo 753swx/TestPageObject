@@ -76,8 +76,7 @@ public class TestPF {
         authPage.openSent();
         Assert.assertTrue(authPage.presenceBySubject(subject));
         // deleting the last mail in list using mouse actions (contextClick, moveToElement and click)
-        authPage.actionDeleteLastMail();
-
-        authPage.logout();
+        authPage.actionDeleteLastMail()
+                .logout();
     }
 }

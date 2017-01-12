@@ -185,10 +185,10 @@ public class AuthorizedPagePF extends Page{
     }
 
     public AuthorizedPagePF actionDeleteLastMail(){
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-        }
+        setImplicitlyWait(0);
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.titleContains("Отправленные"));
+        setImplicitlyWait(20);
         List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
         WebElement visibleMailListsDiv;
         if(mailListsDIV.get(0).isDisplayed()){
@@ -198,9 +198,9 @@ public class AuthorizedPagePF extends Page{
         }
         List<WebElement> mailLists = visibleMailListsDiv.findElements(By.cssSelector("div[data-bem='b-datalist__item']"));
         WebElement lastMail = mailLists.get(0);
-        String a = lastMail.findElement(By.tagName("a")).getAttribute("data-subject");
-        int divSize = mailListsDIV.size();
-        int size = mailLists.size();
+//        String a = lastMail.findElement(By.tagName("a")).getAttribute("data-subject");
+//        int divSize = mailListsDIV.size();
+//        int size = mailLists.size();
 
         Actions action = new Actions(driver);
         action.contextClick(lastMail).build().perform();
