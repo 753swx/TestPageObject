@@ -100,10 +100,34 @@ public class AuthorizedPagePF extends Page{
         return this;
     }
 
-    public boolean presenceBySubject(String subject)
+//    public boolean presenceBySubject(String subject)
+//    {
+//        try {
+//            driver.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
+//            return true;
+//
+//        } catch (org.openqa.selenium.NoSuchElementException ex){
+//            return false;
+//        }
+//    }
+
+    public boolean presenceBySubjectInDrafts(String subject)
     {
+        setImplicitlyWait(0);
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.titleContains("Черновики"));
+        setImplicitlyWait(20);
+
+        List<WebElement> mailLists = driver.findElements(By.cssSelector("div.b-datalist__body"));
+        WebElement actualList = null;
+
+        for (int i = 0; i < mailLists.size(); i++) {
+            if(mailLists.get(i).isDisplayed()){
+                actualList = mailLists.get(i);
+            }
+        }
         try {
-            driver.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
+            actualList.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
             return true;
 
         } catch (org.openqa.selenium.NoSuchElementException ex){
@@ -111,7 +135,45 @@ public class AuthorizedPagePF extends Page{
         }
     }
 
-    public AuthorizedPagePF openMailBySubject(String subject)
+    public boolean presenceBySubjectInSent(String subject)
+    {
+        try {
+            setImplicitlyWait(0);
+            WebDriverWait wait = new WebDriverWait(driver, 20);
+            wait.until(ExpectedConditions.titleContains("Отправленные"));
+            setImplicitlyWait(20);
+
+            List<WebElement> mailLists = driver.findElements(By.cssSelector("div.b-datalist__body"));
+            WebElement actualList = null;
+
+            for (int i = 0; i < mailLists.size(); i++) {
+                if(mailLists.get(i).isDisplayed()){
+                    actualList = mailLists.get(i);
+                }
+            }
+            actualList.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
+            return true;
+
+        }catch (org.openqa.selenium.NoSuchElementException ex){
+            try{
+                openSent();
+                List<WebElement> mailLists = driver.findElements(By.cssSelector("div.b-datalist__body"));
+                WebElement actualList2 = null;
+
+                for (int i = 0; i < mailLists.size(); i++) {
+                    if(mailLists.get(i).isDisplayed()){
+                        actualList2 = mailLists.get(i);
+                    }
+                }
+                actualList2.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
+                return true;
+            }catch (org.openqa.selenium.NoSuchElementException e) {
+                return false;
+            }
+        }
+    }
+
+    public AuthorizedPagePF openMailBySubjectFromDrafts(String subject)
     {
         driver.findElement(By.cssSelector("a[data-subject='"+ subject +"'][href$='drafts/']")).click();
         return this;

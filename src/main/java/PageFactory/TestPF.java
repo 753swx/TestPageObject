@@ -3,8 +3,6 @@ package PageFactory;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -51,17 +49,17 @@ public class TestPF {
         authPage.actionCreateNewMail(addressee, subject, text)
                 .actionSaveDraft()
                 .openDrafts();
-        Assert.assertTrue(authPage.presenceBySubject(subject));
+        Assert.assertTrue(authPage.presenceBySubjectInDrafts(subject));
+        //making screenshot. The screenshot would be saved in C:\WebDriverTestScreenshots
+        authPage.makeScreenshot();
     }
 
     @Test(dependsOnMethods = { "PresenceInDrafts" })
     public void CheckMailContent() {
-        authPage.openMailBySubject(subject);
+        authPage.openMailBySubjectFromDrafts(subject);
         Assert.assertEquals(authPage.getAddressee(), addressee + ",");
         Assert.assertEquals(authPage.getSubject(), subject);
         Assert.assertTrue(authPage.getText().contains(text));
-        //making screenshot. The screenshot would be saved in C:\WebDriverTestScreenshots
-        authPage.makeScreenshot();
     }
 
     @Test(dependsOnMethods = { "CheckMailContent" })
@@ -74,7 +72,9 @@ public class TestPF {
     @Test(dependsOnMethods = { "SendAndCheckDrafts" })
     public void CheckPresenceInSent(){
         authPage.openSent();
-        Assert.assertTrue(authPage.presenceBySubject(subject));
+        Assert.assertTrue(authPage.presenceBySubjectInSent(subject));
+        //making screenshot. The screenshot would be saved in C:\WebDriverTestScreenshots
+        authPage.makeScreenshot();
         // deleting the last mail in list using mouse actions (contextClick, moveToElement and click)
         authPage.actionDeleteLastMail()
                 .logout();

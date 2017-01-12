@@ -68,7 +68,7 @@ public class Tests {
 
 //    @Test(dependsOnMethods = { "PresenceInDrafts" })
 //    public void CheckMailContent() {
-//        authPage.openMailBySubject(subject);
+//        authPage.openMailBySubjectFromDrafts(subject);
 //        Assert.assertEquals(authPage.getAddressee(), addressee + ",");
 //        Assert.assertEquals(authPage.getSubject(), subject);
 //        Assert.assertTrue(authPage.getText().contains(text));
