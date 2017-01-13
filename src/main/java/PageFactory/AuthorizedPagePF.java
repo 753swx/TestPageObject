@@ -169,6 +169,9 @@ public class AuthorizedPagePF extends Page{
                 return true;
             }catch (org.openqa.selenium.NoSuchElementException e) {
                 return false;
+            }catch (org.openqa.selenium.StaleElementReferenceException stEx){
+                presenceBySubjectInSent(subject);
+                return false;
             }
         }
     }

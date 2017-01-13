@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
-public class TestPF {
+ public class TestPF {
     private WebDriver driver;
     private LoginPagePF logPage;
     private AuthorizedPagePF authPage;
