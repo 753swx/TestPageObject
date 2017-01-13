@@ -118,7 +118,7 @@ public class AuthorizedPagePF extends Page{
         wait.until(ExpectedConditions.titleContains("Черновики"));
         setImplicitlyWait(20);
 
-        List<WebElement> mailLists = driver.findElements(By.cssSelector("div.b-datalist__body"));
+        List<WebElement> mailLists = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
         WebElement actualList = null;
 
         for (int i = 0; i < mailLists.size(); i++) {
@@ -143,7 +143,7 @@ public class AuthorizedPagePF extends Page{
             wait.until(ExpectedConditions.titleContains("Отправленные"));
             setImplicitlyWait(20);
 
-            List<WebElement> mailLists = driver.findElements(By.cssSelector("div.b-datalist__body"));
+            List<WebElement> mailLists = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
             WebElement actualList = null;
 
             for (int i = 0; i < mailLists.size(); i++) {
@@ -157,7 +157,7 @@ public class AuthorizedPagePF extends Page{
         }catch (org.openqa.selenium.NoSuchElementException ex){
             try{
                 openSent();
-                List<WebElement> mailLists = driver.findElements(By.cssSelector("div.b-datalist__body"));
+                List<WebElement> mailLists = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
                 WebElement actualList2 = null;
 
                 for (int i = 0; i < mailLists.size(); i++) {
@@ -255,7 +255,7 @@ public class AuthorizedPagePF extends Page{
         wait.until(ExpectedConditions.titleContains("Отправленные"));
         setImplicitlyWait(20);
 //        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
-        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div.b-datalist__body"));
+        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
         WebElement visibleMailListsDiv = null;
 
         for (int i = 0; i < mailListsDIV.size(); i++) {
