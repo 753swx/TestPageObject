@@ -112,17 +112,6 @@ public class AuthorizedPagePF extends Page{
         return this;
     }
 
-//    public boolean presenceBySubject(String subject)
-//    {
-//        try {
-//            driver.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
-//            return true;
-//
-//        } catch (org.openqa.selenium.NoSuchElementException ex){
-//            return false;
-//        }
-//    }
-
     public boolean presenceBySubjectInDrafts(String subject)
     {
         setImplicitlyWait(0);
@@ -266,7 +255,6 @@ public class AuthorizedPagePF extends Page{
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.titleContains("Отправленные"));
         setImplicitlyWait(20);
-//        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
         List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
         WebElement visibleMailListsDiv = null;
 
@@ -279,6 +267,8 @@ public class AuthorizedPagePF extends Page{
 
         List<WebElement> mailLists = visibleMailListsDiv.findElements(By.cssSelector("div[data-bem='b-datalist__item']"));
         WebElement lastMail = mailLists.get(0);
+
+//        debug info
 //        String a = lastMail.findElement(By.tagName("a")).getAttribute("data-subject");
 //        int divSize = mailListsDIV.size();
 //        int size = mailLists.size();
@@ -301,9 +291,7 @@ public class AuthorizedPagePF extends Page{
             Thread.sleep(2000);
         } catch (InterruptedException e) {
         }
-
         return this;
     }
-
 
 }
