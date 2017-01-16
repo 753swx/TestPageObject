@@ -1,6 +1,10 @@
 package PageFactory;
 
 
+import Patterns.Decorator.WebDriverDecorator;
+import Patterns.FactoryMethod.ChromeDriverCreator;
+import Patterns.FactoryMethod.WebDriverCreator;
+import Patterns.Singleton.WebDriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -22,7 +26,10 @@ import org.testng.annotations.Test;
 
     @BeforeClass
     public void setUp() {
-        driver = new ChromeDriver();
+        WebDriverCreator webDriverCreator = new  ChromeDriverCreator();
+        driver = webDriverCreator.factoryMethod();
+//        getting WebDriver instance via singleton
+//        driver = WebDriverSingleton.getInstance();
         driver.manage().window().maximize();
         logPage = new LoginPagePF(driver);
         logPage.setImplicitlyWait(20);
@@ -31,11 +38,15 @@ import org.testng.annotations.Test;
 
     @AfterClass
     public void tearDown() {
+//        Quit driver instance using Singleton
+//        WebDriverSingleton.closeInstance();
         driver.quit();
     }
 
     @Test
     public void AuthorizationTest() {
+//        getting WebDriver instance via singleton
+//        driver = WebDriverSingleton.getInstance();
         logPage.loginFieldsHighlightMsg()
                 .typeLogin(login)
                 .typePassword(pass);
