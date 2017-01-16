@@ -1,11 +1,9 @@
-package Test;
+package PreviousVersion;
 
-import POtest.AuthorizedPage;
-import POtest.LoginPage;
 import Patterns.Decorator.WebDriverDecorator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+
 import java.util.concurrent.TimeUnit;
 import org.testng.Assert;
 import org.testng.annotations.Test;

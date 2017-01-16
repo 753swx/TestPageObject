@@ -1,4 +1,4 @@
-package POtest;
+package PreviousVersion;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;

@@ -1,6 +1,7 @@
 package PageFactory;
 
 
+import BusinessObjects.Mail;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -66,6 +67,17 @@ public class AuthorizedPagePF extends Page{
         subjectField.sendKeys(subject);
         driver.switchTo().frame(inputTextFrame);
         inputTextField.sendKeys(text);
+        driver.switchTo().defaultContent();
+        return this;
+    }
+
+    public AuthorizedPagePF actionCreateNewMail(Mail mail)
+    {
+        new Actions(driver).sendKeys("n").build().perform();
+        addresseeField.sendKeys(mail.getAddressee());
+        subjectField.sendKeys(mail.getSubject());
+        driver.switchTo().frame(inputTextFrame);
+        inputTextField.sendKeys(mail.getText());
         driver.switchTo().defaultContent();
         return this;
     }

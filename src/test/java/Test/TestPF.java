@@ -1,6 +1,10 @@
-package PageFactory;
+package Test;
 
 
+import BusinessObjects.Mail;
+import BusinessObjects.User;
+import PageFactory.AuthorizedPagePF;
+import PageFactory.LoginPagePF;
 import Patterns.Decorator.WebDriverDecorator;
 import Patterns.FactoryMethod.ChromeDriverCreator;
 import Patterns.FactoryMethod.WebDriverCreator;
@@ -18,11 +22,9 @@ import org.testng.annotations.Test;
     private LoginPagePF logPage;
     private AuthorizedPagePF authPage;
 
-    private final String login = "testtask2016";
-    private final String pass = "1123581321test";
-    private final String addressee = "testtask2016@mail.ru";
-    private final String subject = "some subject";
-    private final String text = "some text";
+//    business objects
+    private User user = new User("testtask2016", "1123581321test", "Artur", "Kananchuk", 24 );
+    private Mail mail = new Mail("testtask2016@mail.ru", "business object", "BO test");
 
     @BeforeClass
     public void setUp() {
@@ -48,8 +50,8 @@ import org.testng.annotations.Test;
 //        getting WebDriver instance via singleton
 //        driver = WebDriverSingleton.getInstance();
         logPage.loginFieldsHighlightMsg()
-                .typeLogin(login)
-                .typePassword(pass);
+                .typeLogin(user)
+                .typePassword(user);
         authPage = logPage.clickOnLoginButton();
         Assert.assertTrue(logPage.isAuthorizationSuccessful());
     }
@@ -57,33 +59,33 @@ import org.testng.annotations.Test;
     @Test(dependsOnMethods = { "AuthorizationTest" })
     public void PresenceInDrafts() {
         //using keybord actions for managing with hotkeys
-        authPage.actionCreateNewMail(addressee, subject, text)
+        authPage.actionCreateNewMail(mail)
                 .actionSaveDraft()
                 .openDrafts();
-        Assert.assertTrue(authPage.presenceBySubjectInDrafts(subject));
+        Assert.assertTrue(authPage.presenceBySubjectInDrafts(mail.getSubject()));
         //making screenshot. The screenshot would be saved in C:\WebDriverTestScreenshots
         authPage.makeScreenshot();
     }
 
     @Test(dependsOnMethods = { "PresenceInDrafts" })
     public void CheckMailContent() {
-        authPage.openMailBySubjectFromDrafts(subject);
-        Assert.assertEquals(authPage.getAddressee(), addressee + ",");
-        Assert.assertEquals(authPage.getSubject(), subject);
-        Assert.assertTrue(authPage.getText().contains(text));
+        authPage.openMailBySubjectFromDrafts(mail.getSubject());
+        Assert.assertEquals(authPage.getAddressee(), mail.getAddressee() + ",");
+        Assert.assertEquals(authPage.getSubject(), mail.getSubject());
+        Assert.assertTrue(authPage.getText().contains(mail.getText()));
     }
 
     @Test(dependsOnMethods = { "CheckMailContent" })
     public void SendAndCheckDrafts(){
         authPage.sendMail()
                 .openDrafts();
-        Assert.assertTrue(authPage.absenceBySubject(subject));
+        Assert.assertTrue(authPage.absenceBySubject(mail.getSubject()));
     }
 
     @Test(dependsOnMethods = { "SendAndCheckDrafts" })
     public void CheckPresenceInSent(){
         authPage.openSent();
-        Assert.assertTrue(authPage.presenceBySubjectInSent(subject));
+        Assert.assertTrue(authPage.presenceBySubjectInSent(mail.getSubject()));
         //making screenshot. The screenshot would be saved in C:\WebDriverTestScreenshots
         authPage.makeScreenshot();
         // deleting the last mail in list using mouse actions (contextClick, moveToElement and click)

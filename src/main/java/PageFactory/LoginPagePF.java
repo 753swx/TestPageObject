@@ -1,6 +1,7 @@
 package PageFactory;
 
 
+import BusinessObjects.User;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -32,11 +33,23 @@ public class LoginPagePF extends Page {
         loginField.sendKeys(login);
         return this;
     }
+    public LoginPagePF typeLogin(User user){
+        highLightBackground(loginField);
+        loginField.sendKeys(user.getLogin());
+        return this;
+    }
 
     public LoginPagePF typePassword(String pass)
     {
         highLightBackground(passField);
         passField.sendKeys(pass);
+        return this;
+    }
+
+    public LoginPagePF typePassword(User user)
+    {
+        highLightBackground(passField);
+        passField.sendKeys(user.getPassword());
         return this;
     }
 
