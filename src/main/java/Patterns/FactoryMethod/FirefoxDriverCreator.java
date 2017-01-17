@@ -10,7 +10,7 @@ import java.io.File;
 
 public class FirefoxDriverCreator extends WebDriverCreator {
     public WebDriver factoryMethod() {
-        FirefoxBinary binary = new FirefoxBinary(new File(System.getProperty("user.dir") + "/geckodriver.exe"));
+        FirefoxBinary binary = new FirefoxBinary(new File("c:\\Program Files\\Mozilla Firefox\\firefox.exe"));
         FirefoxProfile firefoxProfile = new FirefoxProfile();
         WebDriver driver = new FirefoxDriver(binary,firefoxProfile);
         return driver;

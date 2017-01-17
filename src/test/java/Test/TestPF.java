@@ -7,6 +7,7 @@ import PageFactory.AuthorizedPagePF;
 import PageFactory.LoginPagePF;
 import Patterns.Decorator.WebDriverDecorator;
 import Patterns.FactoryMethod.ChromeDriverCreator;
+import Patterns.FactoryMethod.FirefoxDriverCreator;
 import Patterns.FactoryMethod.WebDriverCreator;
 import Patterns.Singleton.WebDriverSingleton;
 import org.openqa.selenium.WebDriver;
@@ -28,7 +29,7 @@ import org.testng.annotations.Test;
 
     @BeforeClass
     public void setUp() {
-        WebDriverCreator webDriverCreator = new  ChromeDriverCreator();
+        WebDriverCreator webDriverCreator = new ChromeDriverCreator();
         driver = webDriverCreator.factoryMethod();
 //        getting WebDriver instance via singleton
 //        driver = WebDriverSingleton.getInstance();
