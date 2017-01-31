@@ -12,9 +12,16 @@ import java.util.concurrent.TimeUnit;
 public class LoginPagePF extends Page {
 
 
+    public LoginPagePF(WebDriver driver, String subject) {
+        super(driver);
+        this.subject = subject;
+    }
+
     public LoginPagePF(WebDriver driver) {
         super(driver);
     }
+
+    private String subject;
 
     @FindBy(id = "mailbox__login")
     private WebElement loginField;
@@ -56,7 +63,7 @@ public class LoginPagePF extends Page {
     public AuthorizedPagePF clickOnLoginButton ()
     {
         loginButton.click();
-        return new AuthorizedPagePF(driver);
+        return new AuthorizedPagePF(driver, subject);
     }
 
     public boolean isAuthorizationSuccessful(){

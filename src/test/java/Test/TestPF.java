@@ -23,18 +23,22 @@ import org.testng.annotations.Test;
     private LoginPagePF logPage;
     private AuthorizedPagePF authPage;
 
+     private User user;
+     private Mail mail;
+
 //    business objects
-    private User user = new User("testtask2016", "1123581321test", "Artur", "Kananchuk", 24 );
-    private Mail mail = new Mail("testtask2016@mail.ru", "business object", "BO test");
+
 
     @BeforeClass
     public void setUp() {
+        user = new User("testtask2016", "1123581321test", "Artur", "Kananchuk", 24 );
+        mail = new Mail("testtask2016@mail.ru", "business object", "BO test");
         WebDriverCreator webDriverCreator = new ChromeDriverCreator();
         driver = webDriverCreator.factoryMethod();
 //        getting WebDriver instance via singleton
 //        driver = WebDriverSingleton.getInstance();
         driver.manage().window().maximize();
-        logPage = new LoginPagePF(driver);
+        logPage = new LoginPagePF(driver, mail.getSubject());
         logPage.setImplicitlyWait(20);
         driver.get("https://mail.ru/");
     }

@@ -1,12 +1,17 @@
 package PreviousVersion;
 
 import Patterns.Decorator.WebDriverDecorator;
+import Patterns.FactoryMethod.ChromeDriverCreator;
+import Patterns.FactoryMethod.FirefoxDriverCreator;
+import Patterns.FactoryMethod.WebDriverCreator;
 import PreviousVersion.AuthorizedPage;
 import PreviousVersion.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.annotations.AfterClass;
@@ -27,8 +32,11 @@ public class Tests {
 
     @BeforeClass
     public void setUp() {
-        driver = new ChromeDriver();
-        customDriver = new WebDriverDecorator(driver);
+//        driver = new FirefoxDriver();
+//        customDriver = new WebDriverDecorator(driver);
+        customDriver = new FirefoxDriver();
+//        WebDriverCreator webDriverCreator = new FirefoxDriverCreator();
+//        customDriver = webDriverCreator.factoryMethod();
         logPage = new LoginPage(customDriver);
         authPage = new AuthorizedPage(customDriver);
         customDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -37,6 +45,11 @@ public class Tests {
 
     @AfterClass
     public void tearDown() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         customDriver.quit();
     }
 
@@ -68,26 +81,26 @@ public class Tests {
 //            e.printStackTrace();
 //        }
     }
-
-    @Test(dependsOnMethods = { "PresenceInDrafts" })
-    public void CheckMailContent() {
-        authPage.openMailBySubject(subject);
-        Assert.assertEquals(authPage.getAddressee(), addressee + ",");
-        Assert.assertEquals(authPage.getSubject(), subject);
-        Assert.assertTrue(authPage.getText().contains(text));
-    }
-
-    @Test(dependsOnMethods = { "CheckMailContent" })
-    public void SendAndCheckDrafts(){
-        authPage.sendMail();
-        authPage.openDrafts();
-        Assert.assertTrue(authPage.absenceBySubject(subject));
-    }
-
-    @Test(dependsOnMethods = { "SendAndCheckDrafts" })
-    public void CheckPresenceInSent(){
-        authPage.openSent();
-        Assert.assertTrue(authPage.presenceBySubject(subject));
-        authPage.logout();
-    }
+//
+//    @Test(dependsOnMethods = { "PresenceInDrafts" })
+//    public void CheckMailContent() {
+//        authPage.openMailBySubject(subject);
+//        Assert.assertEquals(authPage.getAddressee(), addressee + ",");
+//        Assert.assertEquals(authPage.getSubject(), subject);
+//        Assert.assertTrue(authPage.getText().contains(text));
+//    }
+//
+//    @Test(dependsOnMethods = { "CheckMailContent" })
+//    public void SendAndCheckDrafts(){
+//        authPage.sendMail();
+//        authPage.openDrafts();
+//        Assert.assertTrue(authPage.absenceBySubject(subject));
+//    }
+//
+//    @Test(dependsOnMethods = { "SendAndCheckDrafts" })
+//    public void CheckPresenceInSent(){
+//        authPage.openSent();
+//        Assert.assertTrue(authPage.presenceBySubject(subject));
+//        authPage.logout();
+//    }
 }

@@ -12,9 +12,15 @@ import java.util.List;
 
 public class AuthorizedPagePF extends Page{
 
-    public AuthorizedPagePF(WebDriver driver) {
+    public AuthorizedPagePF(WebDriver driver, String subject) {
         super(driver);
+        this.locator1 = "a[data-subject='"+ subject +"']";
+        this.locator2 = "a[data-subject='"+ subject +"'][href$='drafts/']";
+
     }
+
+    private String locator1;
+    private String locator2;
 
     @FindBy(css = "a[data-shortcut-title='N']")
     private WebElement newMailButton;
@@ -48,6 +54,7 @@ public class AuthorizedPagePF extends Page{
 
     @FindBy(css = "a[id='PH_logoutLink']")
     private WebElement logoutLink;
+
 
     public AuthorizedPagePF createNewMail(String addressee, String subject, String text)
     {
