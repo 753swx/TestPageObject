@@ -14,13 +14,29 @@ public class AuthorizedPagePF extends Page{
 
     public AuthorizedPagePF(WebDriver driver, String subject) {
         super(driver);
-        this.locator1 = "a[data-subject='"+ subject +"']";
-        this.locator2 = "a[data-subject='"+ subject +"'][href$='drafts/']";
+        this.locatorForCheckingBySubject = "a[data-subject='"+ subject +"']";
+        this.locatorForOpeningBySubject = "a[data-subject='"+ subject +"'][href$='drafts/']";
 
     }
 
-    private String locator1;
-    private String locator2;
+    private String locatorForCheckingBySubject;
+    private String locatorForOpeningBySubject;
+
+    private String locatorForExpCondInGetAddressee = "//span[@class='js-compose-label compose__labels__label'][2]";
+    private String locatorForGettingAddresse = "input#compose_to";
+
+    private String locatorForGettingSubject = "input[name='Subject']";
+
+    private String locatorIDForGettingText = "tinymce";
+    private String locatorCSSForGettingText = "div div div";
+
+    private String locatorForExpCondInSendMail = "div[class='message-sent__title']";
+
+    private String locatorForExpCondInLogout = "mailbox__auth__button";
+
+    private String locatorMailListForActionDeleting = "div[data-bem='b-datalist__item']";
+    private String locatorDeletingMailFromContextMenu = "div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']";
+
 
     @FindBy(css = "a[data-shortcut-title='N']")
     private WebElement newMailButton;
@@ -55,9 +71,21 @@ public class AuthorizedPagePF extends Page{
     @FindBy(css = "a[id='PH_logoutLink']")
     private WebElement logoutLink;
 
+    private WebElement getVisibleMailList(){
 
-    public AuthorizedPagePF createNewMail(String addressee, String subject, String text)
-    {
+        List<WebElement> mailLists = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
+        WebElement visibleMailList = null;
+
+        for (int i = 0; i < mailLists.size(); i++) {
+            if(mailLists.get(i).isDisplayed()){
+                visibleMailList = mailLists.get(i);
+            }
+        }
+        return visibleMailList;
+    }
+
+
+    public AuthorizedPagePF createNewMail(String addressee, String subject, String text) {
         newMailButton.click();
         addresseeField.sendKeys(addressee);
         subjectField.sendKeys(subject);
@@ -67,8 +95,7 @@ public class AuthorizedPagePF extends Page{
         return this;
     }
 
-    public AuthorizedPagePF actionCreateNewMail(String addressee, String subject, String text)
-    {
+    public AuthorizedPagePF actionCreateNewMail(String addressee, String subject, String text) {
         new Actions(driver).sendKeys("n").build().perform();
         addresseeField.sendKeys(addressee);
         subjectField.sendKeys(subject);
@@ -78,8 +105,7 @@ public class AuthorizedPagePF extends Page{
         return this;
     }
 
-    public AuthorizedPagePF actionCreateNewMail(Mail mail)
-    {
+    public AuthorizedPagePF actionCreateNewMail(Mail mail) {
         new Actions(driver).sendKeys("n").build().perform();
         addresseeField.sendKeys(mail.getAddressee());
         subjectField.sendKeys(mail.getSubject());
@@ -89,8 +115,7 @@ public class AuthorizedPagePF extends Page{
         return this;
     }
 
-    public AuthorizedPagePF saveDraft()
-    {
+    public AuthorizedPagePF saveDraft() {
         saveDraftButton.click();
         setImplicitlyWait(0);
         WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -99,8 +124,7 @@ public class AuthorizedPagePF extends Page{
         return this;
     }
 
-    public AuthorizedPagePF actionSaveDraft()
-    {
+    public AuthorizedPagePF actionSaveDraft() {
         new Actions(driver).keyDown(Keys.CONTROL).sendKeys("s").keyUp(Keys.CONTROL).build().perform();
         setImplicitlyWait(0);
         WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -126,16 +150,10 @@ public class AuthorizedPagePF extends Page{
         wait.until(ExpectedConditions.titleContains("Черновики"));
         setImplicitlyWait(20);
 
-        List<WebElement> mailLists = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
-        WebElement actualList = null;
+        WebElement actualList = getVisibleMailList();
 
-        for (int i = 0; i < mailLists.size(); i++) {
-            if(mailLists.get(i).isDisplayed()){
-                actualList = mailLists.get(i);
-            }
-        }
         try {
-            actualList.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
+            actualList.findElement(By.cssSelector(locatorForCheckingBySubject));
             return true;
 
         } catch (org.openqa.selenium.NoSuchElementException ex){
@@ -151,29 +169,16 @@ public class AuthorizedPagePF extends Page{
             wait.until(ExpectedConditions.titleContains("Отправленные"));
             setImplicitlyWait(20);
 
-            List<WebElement> mailLists = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
-            WebElement actualList = null;
+            WebElement actualList = getVisibleMailList();
 
-            for (int i = 0; i < mailLists.size(); i++) {
-                if(mailLists.get(i).isDisplayed()){
-                    actualList = mailLists.get(i);
-                }
-            }
-            actualList.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
+            actualList.findElement(By.cssSelector(locatorForCheckingBySubject));
             return true;
 
         }catch (org.openqa.selenium.NoSuchElementException ex){
             try{
                 openSent();
-                List<WebElement> mailLists = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
-                WebElement actualList2 = null;
-
-                for (int i = 0; i < mailLists.size(); i++) {
-                    if(mailLists.get(i).isDisplayed()){
-                        actualList2 = mailLists.get(i);
-                    }
-                }
-                actualList2.findElement(By.cssSelector("a[data-subject='"+ subject +"']"));
+                WebElement actualList = getVisibleMailList();
+                actualList.findElement(By.cssSelector(locatorForCheckingBySubject));
                 return true;
             }catch (org.openqa.selenium.NoSuchElementException e) {
                 return false;
@@ -186,25 +191,25 @@ public class AuthorizedPagePF extends Page{
 
     public AuthorizedPagePF openMailBySubjectFromDrafts(String subject)
     {
-        driver.findElement(By.cssSelector("a[data-subject='"+ subject +"'][href$='drafts/']")).click();
+        driver.findElement(By.cssSelector(locatorForOpeningBySubject)).click();
         return this;
     }
 
     public String getAddressee(){
         setImplicitlyWait(0);
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='js-compose-label compose__labels__label'][2]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locatorForExpCondInGetAddressee)));
         setImplicitlyWait(20);
-        return driver.findElement(By.cssSelector("input#compose_to")).getAttribute("value");
+        return driver.findElement(By.cssSelector(locatorForGettingAddresse)).getAttribute("value");
     }
 
     public String getSubject(){
-        return driver.findElement(By.cssSelector("input[name='Subject'")).getAttribute("value");
+        return driver.findElement(By.cssSelector(locatorForGettingSubject)).getAttribute("value");
     }
 
     public String getText(){
         driver.switchTo().frame(inputTextFrame);
-        String textFromDrafts = driver.findElement(By.id("tinymce").cssSelector("div div div")).getText();
+        String textFromDrafts = driver.findElement(By.id(locatorIDForGettingText).cssSelector(locatorCSSForGettingText)).getText();
         driver.switchTo().defaultContent();
         return textFromDrafts;
     }
@@ -213,7 +218,7 @@ public class AuthorizedPagePF extends Page{
         sendButton.click();
         setImplicitlyWait(0);
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class='message-sent__title']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locatorForExpCondInSendMail)));
         setImplicitlyWait(20);
         return this;
     }
@@ -222,7 +227,7 @@ public class AuthorizedPagePF extends Page{
         try {
             setImplicitlyWait(0);
             WebDriverWait wait = new WebDriverWait(driver, 5);
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(locatorForCheckingBySubject)));
             setImplicitlyWait(20);
             return true;
         } catch (org.openqa.selenium.TimeoutException e){
@@ -230,7 +235,7 @@ public class AuthorizedPagePF extends Page{
                 openDrafts();
                 setImplicitlyWait(0);
                 WebDriverWait wait = new WebDriverWait(driver, 5);
-                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("a[data-subject='"+ subject +"']")));
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(locatorForCheckingBySubject)));
                 setImplicitlyWait(20);
                 return true;
             } catch (org.openqa.selenium.TimeoutException e1){
@@ -253,7 +258,7 @@ public class AuthorizedPagePF extends Page{
         logoutLink.click();
         setImplicitlyWait(0);
         WebDriverWait wait = new WebDriverWait(driver, 20);
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("mailbox__auth__button")));
+        wait.until(ExpectedConditions.elementToBeClickable(By.id(locatorForExpCondInLogout)));
         return new LoginPagePF(driver);
     }
 
@@ -262,17 +267,9 @@ public class AuthorizedPagePF extends Page{
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.titleContains("Отправленные"));
         setImplicitlyWait(20);
-        List<WebElement> mailListsDIV = driver.findElements(By.cssSelector("div[class='b-datalist b-datalist_letters b-datalist_letters_to']"));
-        WebElement visibleMailListsDiv = null;
+        WebElement visibleMailListsDiv = getVisibleMailList();
 
-        for (int i = 0; i < mailListsDIV.size(); i++) {
-
-            if(mailListsDIV.get(i).isDisplayed()){
-                visibleMailListsDiv = mailListsDIV.get(i);
-            }
-        }
-
-        List<WebElement> mailLists = visibleMailListsDiv.findElements(By.cssSelector("div[data-bem='b-datalist__item']"));
+        List<WebElement> mailLists = visibleMailListsDiv.findElements(By.cssSelector(locatorMailListForActionDeleting));
         WebElement lastMail = mailLists.get(0);
 
 //        debug info
@@ -286,7 +283,7 @@ public class AuthorizedPagePF extends Page{
             Thread.sleep(2000);
         } catch (InterruptedException e) {
         }
-        WebElement delMailFromContextMenu = driver.findElement(By.cssSelector("div[class='b-dropdown__list b-dropdown__list_contextmenu'] a[data-num='2']"));
+        WebElement delMailFromContextMenu = driver.findElement(By.cssSelector(locatorDeletingMailFromContextMenu));
         action.moveToElement(delMailFromContextMenu).build().perform();
         try {
             Thread.sleep(2000);
