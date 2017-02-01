@@ -23,11 +23,9 @@ import org.testng.annotations.Test;
     private LoginPagePF logPage;
     private AuthorizedPagePF authPage;
 
+//     business objects
      private User user;
      private Mail mail;
-
-//    business objects
-
 
     @BeforeClass
     public void setUp() {
